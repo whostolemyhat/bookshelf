@@ -31,4 +31,29 @@
         }
     });
 
+    var BookshelfView = Backbone.View.extend({
+        el: $('#books'),
+
+        initialize: function() {
+            this.collection = new Bookshelf(books);
+            this.render();
+        },
+
+        render: function() {
+            var self = this;
+            _.each(this.collection.models, function(item) {
+                self.renderBook(item);
+            }, this);
+        },
+
+        renderBook: function(item) {
+            var bookView = new BookView({
+                model: item
+            });
+            this.$el.append(bookView.render().el);
+        }
+    });
+
+    var bookshelf = new BookshelfView();
+
 })(jQuery);
