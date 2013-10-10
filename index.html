@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Backbone</title>
+</head>
+<body>
+    <div id="books"></div>
+
+    <script id="bookTemplate" type="text/template">
+        <img src="<%= img %>" alt="<% title %>" />
+        <h1><%= title %><span><%= tags %></h1>
+        <div><%= author %></div>
+        <div><%= url %></div>
+    </script>
+
+    <script src="/js/vendor/jquery-2.0.3.min.js"></script>
+    <script src="/js/vendor/underscore-min.js"></script>
+    <script src="/js/vendor/backbone-min.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
