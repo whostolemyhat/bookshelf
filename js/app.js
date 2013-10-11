@@ -87,7 +87,8 @@
         },
 
         events: {
-            'change #filter select': 'setFilter'
+            'change #filter select': 'setFilter',
+            'click #add': 'addBook'
         },
 
         setFilter: function(e) {
