@@ -4,7 +4,7 @@
         { title: "Javascript the Definitive Guide", author: "David Flanagan", tags: "javascript", url: "" },
         { title: "Head First Design Patterns", author: "Elisabeth Freeman, Eric Freeman, Bert Bates, Kathy Sierra, Elisabeth Robson", tags: "java, design patterns", url: "" },
         { title: "Learning Javascript Design Patterns", author: "Addy Osmani", tags: "javascript, design patterns", url: "" },
-        { title: "Head First Java", author: "Bert Bates, Kathy Sierra", tags: "Java", url: "" },
+        { title: "Head First Java", author: "Bert Bates, Kathy Sierra", tags: "java", url: "" },
         { title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", tags: "programming", url: "" }
     ];
 
@@ -37,12 +37,19 @@
         initialize: function() {
             this.collection = new Bookshelf(books);
             this.render();
+            this.$el.find('#filter').append(this.createNav());
+            this.on('change:filterType', function() {
+                console.log(this.filterType);
+                this.filterByTag();
+            }, this);
+            this.collection.on('reset', this.render, this);
         },
 
         render: function() {
-            var self = this;
+            this.$el.find('article').remove();
+
             _.each(this.collection.models, function(item) {
-                self.renderBook(item);
+                this.renderBook(item);
             }, this);
         },
 
@@ -51,9 +58,77 @@
                 model: item
             });
             this.$el.append(bookView.render().el);
+        },
+
+        getTags: function() {
+            // tags is a list of comma-separated strings
+            var tags = _.map(this.collection.pluck('tags'), function(tags) {
+                return _.map(tags.split(','), function(tag) {
+                    return tag.trim();
+                });
+            });
+            
+            return _.uniq(_.flatten(tags));
+        },
+
+        createNav: function() {
+            var select = $('<select />', {
+                html: '<option value="all">All</option>'
+            });
+
+            _.each(this.getTags(), function(tag) {
+                var option = $('<option />', {
+                    value: tag.toLowerCase(),
+                    text: tag.toLowerCase()
+                }).appendTo(select);
+            });
+
+            return select;
+        },
+
+        events: {
+            'change #filter select': 'setFilter'
+        },
+
+        setFilter: function(e) {
+            this.filterType = e.currentTarget.value;
+            this.trigger('change:filterType');
+        },
+
+        filterByTag: function() {
+            if(this.filterType === 'all') {
+                this.collection.reset(books);
+                booksRouter.navigate('filter/all');
+            } else {
+                this.collection.reset(books, { silent: true });
+
+                var filterType = this.filterType;
+                filtered = _.filter(this.collection.models, function(item) {
+                    // match whole word
+                    var re = new RegExp('\\b' + filterType + '\\b', 'g');
+                    return re.test(item.get('tags'));
+                });
+
+                this.collection.reset(filtered);
+                booksRouter.navigate('filter/' + filterType);
+            }
+        }
+    });
+
+    var BooksRouter = Backbone.Router.extend({
+        routes: {
+            'filter/:tag': 'urlFilter'
+        },
+
+        urlFilter: function(tag) {
+            console.log(tag);
+            bookshelf.filterType = tag;
+            bookshelf.trigger('change:filterType');
         }
     });
 
     var bookshelf = new BookshelfView();
+    var booksRouter = new BooksRouter();
+    Backbone.history.start();
 
 })(jQuery);
