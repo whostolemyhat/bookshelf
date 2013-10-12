@@ -33,16 +33,21 @@
 
     var BookshelfView = Backbone.View.extend({
         el: $('#books'),
+        tags: [],
 
         initialize: function() {
             this.collection = new Bookshelf(books);
             this.render();
+<<<<<<< HEAD
+            console.log(this.getTypes());
+=======
             this.$el.find('#filter').append(this.createNav());
             this.on('change:filterType', function() {
                 console.log(this.filterType);
                 this.filterByTag();
             }, this);
             this.collection.on('reset', this.render, this);
+>>>>>>> 239dd53f91b8faa80b6622befa9177eadb4b7539
         },
 
         render: function() {
@@ -60,6 +65,18 @@
             this.$el.append(bookView.render().el);
         },
 
+<<<<<<< HEAD
+        getTypes: function() {
+            // this.tags.push(this.collection.map(function(model) {
+            //     return model.get('tags').split(',')
+            // }));
+            // return _.uniq(this.collection.pluck("tags", false, function(tags) {
+            //     return tags.split(',');
+            // }));
+            return _.uniq(this.collection.map(function(model) {
+                return model.get('tags').split(',');
+            }));
+=======
         getTags: function() {
             // tags is a list of comma-separated strings
             var tags = _.map(this.collection.pluck('tags'), function(tags) {
@@ -125,6 +142,7 @@
             console.log(tag);
             bookshelf.filterType = tag;
             bookshelf.trigger('change:filterType');
+>>>>>>> 239dd53f91b8faa80b6622befa9177eadb4b7539
         }
     });
 

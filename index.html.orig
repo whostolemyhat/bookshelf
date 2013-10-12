@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
+<<<<<<< HEAD
+    <header>
+        <div id="filter"><label for="">Show:</label></div>
+    </header>
+    <div id="books"></div>
+=======
     
 
     <div id="books">
@@ -32,10 +38,12 @@
             <a href="#" id="add">Add Book</a>
         </form>
     </div>
+>>>>>>> 239dd53f91b8faa80b6622befa9177eadb4b7539
 
     <script id="bookTemplate" type="text/template">
         <img src="<%= img %>" alt="<% title %>" />
-        <h1><%= title %><span><%= tags %></h1>
+        <h1><%= title %></h1>
+        <div class="tags"><%= tags %></div>
         <div><%= author %></div>
         <div><%= url %></div>
     </script>
