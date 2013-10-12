@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Backbone</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
+    <header>
+        <div id="filter"><label for="">Show:</label></div>
+    </header>
     <div id="books"></div>
 
     <script id="bookTemplate" type="text/template">
         <img src="<%= img %>" alt="<% title %>" />
-        <h1><%= title %><span><%= tags %></h1>
+        <h1><%= title %></h1>
+        <div class="tags"><%= tags %></div>
         <div><%= author %></div>
         <div><%= url %></div>
     </script>

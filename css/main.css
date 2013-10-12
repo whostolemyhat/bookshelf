@@ -1,0 +1,39 @@
+/* line 1, /Users/james/Documents/bookshelf/css/main.scss */
+* {
+  box-sizing: border-box; }
+
+/* line 5, /Users/james/Documents/bookshelf/css/main.scss */
+html {
+  font-size: 62.5%; }
+
+/* line 9, /Users/james/Documents/bookshelf/css/main.scss */
+body {
+  font-family: Tahoma, Verdana, Arial, sans-serif;
+  background: #6d2819;
+  color: #fdfdf1;
+  font-size: 1.6rem; }
+
+/* line 16, /Users/james/Documents/bookshelf/css/main.scss */
+h1 {
+  margin: 0 0 0.5em; }
+
+/* line 20, /Users/james/Documents/bookshelf/css/main.scss */
+article {
+  width: 30%;
+  float: left;
+  padding: 1em;
+  margin: 1em;
+  border: 1px solid #511e13;
+  background: #571f19;
+  box-shadow: 0 2px 2px #511e13;
+  min-height: 200px; }
+  /* line 30, /Users/james/Documents/bookshelf/css/main.scss */
+  article img {
+    float: right;
+    margin: .5em; }
+
+/* line 36, /Users/james/Documents/bookshelf/css/main.scss */
+.tags {
+  font-style: italic;
+  font-size: 0.95em;
+  margin: 0.5em 0; }

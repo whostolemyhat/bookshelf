@@ -4,7 +4,7 @@
         { title: "Javascript the Definitive Guide", author: "David Flanagan", tags: "javascript", url: "" },
         { title: "Head First Design Patterns", author: "Elisabeth Freeman, Eric Freeman, Bert Bates, Kathy Sierra, Elisabeth Robson", tags: "java, design patterns", url: "" },
         { title: "Learning Javascript Design Patterns", author: "Addy Osmani", tags: "javascript, design patterns", url: "" },
-        { title: "Head First Java", author: "Bert Bates, Kathy Sierra", tags: "Java", url: "" },
+        { title: "Head First Java", author: "Bert Bates, Kathy Sierra", tags: "java", url: "" },
         { title: "The Pragmatic Programmer", author: "Andy Hunt, Dave Thomas", tags: "programming", url: "" }
     ];
 
@@ -33,10 +33,12 @@
 
     var BookshelfView = Backbone.View.extend({
         el: $('#books'),
+        tags: [],
 
         initialize: function() {
             this.collection = new Bookshelf(books);
             this.render();
+            console.log(this.getTypes());
         },
 
         render: function() {
@@ -51,6 +53,18 @@
                 model: item
             });
             this.$el.append(bookView.render().el);
+        },
+
+        getTypes: function() {
+            // this.tags.push(this.collection.map(function(model) {
+            //     return model.get('tags').split(',')
+            // }));
+            // return _.uniq(this.collection.pluck("tags", false, function(tags) {
+            //     return tags.split(',');
+            // }));
+            return _.uniq(this.collection.map(function(model) {
+                return model.get('tags').split(',');
+            }));
         }
     });
 
