@@ -10,6 +10,7 @@
 
     <div id="books">
         <header>
+            <a id="showForm" href="#">Add new contact</a>
             <div id="filter"><label for="">Show</label></div>
         </header>
 
@@ -38,6 +39,19 @@
         <h1><%= title %><span><%= tags %></h1>
         <div><%= author %></div>
         <div><%= url %></div>
+        <a href="#" class="delete">Delete</a>
+        <a href="#" class="edit">Edit</a>
+    </script>
+
+    <script id="editTemplate" type="text/template">
+    <form action="#" method="get">
+        <input type="file" name="img" id="" value="<%= img %>">
+        <input type="text" value="<%= title %>" class="title">
+        <input type="hidden" id="tags" value="<%= tags %>">
+        <input type="text" class="author" value="author">
+        <button class="save">Save</button>
+        <button class="cancel">Cancel</button>
+    </form>
     </script>
 
     <script src="/js/vendor/jquery-2.0.3.min.js"></script>

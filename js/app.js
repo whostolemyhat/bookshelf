@@ -28,6 +28,20 @@
 
             this.$el.html(tmpl(this.model.toJSON()));
             return this;
+        },
+
+        events: {
+            'click .delete': 'deleteBook'
+        },
+
+        deleteBook: function() {
+            var removedTag = this.model.get('tags').toLowerCase();
+            this.model.destroy();
+            this.remove();
+
+            if(_.indexOf(bookshelf.getTags(), removedTag) === -1) {
+                bookshelf.$el.find('#filter select').children('[value="' + removedTag + '"]').remove();
+            }
         }
     });
 
@@ -43,6 +57,7 @@
                 this.filterByTag();
             }, this);
             this.collection.on('reset', this.render, this);
+            this.collection.on('remove', this.removeBook, this);
         },
 
         render: function() {
@@ -58,6 +73,19 @@
                 model: item
             });
             this.$el.append(bookView.render().el);
+        },
+
+        removeBook: function(removedModel) {
+            var removed = removedModel.attributes;
+
+            if(removed.img === '/img/placeholder.png') {
+                delete removed.img;
+            }
+            _.each(books, function(book) {
+                if(_.isEqual(book, removed)) {
+                    books.splice(_.indexOf(books, book), 1);
+                }
+            });
         },
 
         getTags: function() {
@@ -88,7 +116,8 @@
 
         events: {
             'change #filter select': 'setFilter',
-            'click #add': 'addBook'
+            'click #add': 'addBook',
+            'click #showForm': 'showForm'
         },
 
         setFilter: function(e) {
@@ -113,6 +142,10 @@
                 this.collection.reset(filtered);
                 booksRouter.navigate('filter/' + filterType);
             }
+        },
+
+        showForm: function() {
+            this.$el.find('#addContact').slideToggle();
         }
     });
 
