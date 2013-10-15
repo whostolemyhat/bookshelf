@@ -22,6 +22,7 @@
         tagName: "article",
         className: "book-container",
         template: $('#bookTemplate').html(),
+        editTemplate: _.template($('#editTemplate').html()),
 
         render: function() {
             var tmpl = _.template(this.template);
@@ -31,7 +32,11 @@
         },
 
         events: {
-            'click .delete': 'deleteBook'
+            'click .delete': 'deleteBook',
+            'click .edit': 'editBook',
+            'click .tag': 'addTag',
+            'click .save': 'saveEdits',
+            'click .cancel': 'cancelEdit'
         },
 
         deleteBook: function() {
@@ -42,6 +47,61 @@
             if(_.indexOf(bookshelf.getTags(), removedTag) === -1) {
                 bookshelf.$el.find('#filter select').children('[value="' + removedTag + '"]').remove();
             }
+        },
+
+        editBook: function() {
+            this.$el.html(this.editTemplate(this.model.toJSON()));
+
+            var newOpt = $('<option />', {
+                html: '<em>Add new...</em>',
+                value: 'addTag'
+            });
+
+            this.select = directory.createSelect().addClass('tag')
+                            .val(this.$el.find('tags').val()).append(newOpt)
+                            .insertAfter(this.$el.find('title'));
+            this.$el.find('input[type="hidden"]').remove();
+
+            if(this.select.val() === 'addTag') {
+                this.select.remove();
+
+                $('<input />', {
+                    'class': 'tags'
+                }).insertAfter(this.$el.find('.title')).focus();
+            }
+        },
+
+        saveEdits: function(e) {
+            e.preventDefault();
+
+            var formData = {};
+            var prev = this.model.previousAttributes();
+
+            $(e.target).closest('form').find(':input').add('img').each(function() {
+                var el = $(this);
+                formData[el.attr('class')] = el.val();
+            });
+
+            if(formData.img === '') {
+                delete formData.img;
+            }
+
+            this.model.set(formData);
+            this.render();
+
+            if(prev.img === '/img/placeholder.png') {
+                delete prev.img;
+            }
+
+            _.each(books, function(book) {
+                if(_.isEqual(book, prev)) {
+                    books.splice(_.indexOf(books, book), 1, formData);
+                }
+            });
+        },
+
+        cancelEdit: function() {
+            this.render();
         }
     });
 
